@@ -3,105 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IVF-RaBitQ - Super Fun Magic Library Adventure! 🚀🐰</title>
+<title>IVF-RaBitQ - GPU-Native Approximate Nearest Neighbor Search</title>
 <style>
-body { font-family: 'Comic Sans MS', 'Chalkboard SE', cursive; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; color: #333; }
-.container { max-width: 900px; margin: 0 auto; background: white; border-radius: 25px; padding: 35px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-h1 { text-align: center; color: #667eea; font-size: 3em; margin: 0 0 10px; }
-h2 { color: #764ba2; border-bottom: 4px dashed #667eea; padding-bottom: 12px; margin-top: 40px; }
-.time-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 1.1em; }
-.time-table th, .time-table td { border: 3px solid #667eea; padding: 18px; text-align: center; }
-.time-table th { background: #667eea; color: white; }
-.highlight { background: #a8e6cf; padding: 8px 14px; border-radius: 10px; font-weight: bold; }
-#search-result { min-height: 120px; margin-top: 20px; font-size: 1.3em; }
-input, button { padding: 12px 20px; font-size: 1.2em; border-radius: 12px; border: 2px solid #764ba2; margin: 10px 5px; }
-button { background: #764ba2; color: white; cursor: pointer; }
-button:hover { background: #5e3a8c; }
-button:disabled { background: #aaa; cursor: not-allowed; }
-.timer { font-size: 1.4em; color: #ff6b6b; font-weight: bold; margin: 10px 0; }
+body { font-family: 'Courier New', monospace; background: #1a1a2e; color: #eee; margin: 0; padding: 20px; }
+.container { max-width: 1000px; margin: 0 auto; background: #16213e; border-radius: 15px; padding: 30px; }
+h1 { color: #00d9ff; text-align: center; }
+h2 { color: #e94560; border-bottom: 2px solid #0f3460; padding-bottom: 10px; }
+.code-block { background: #0f3460; padding: 15px; border-radius: 8px; overflow-x: auto; }
+pre { margin: 0; color: #a8ff60; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+th, td { border: 1px solid #0f3460; padding: 12px; text-align: left; }
+th { background: #e94560; }
+.highlight { color: #00d9ff; font-weight: bold; }
+.nav { position: fixed; top: 20px; right: 20px; background: #e94560; padding: 10px 20px; border-radius: 5px; }
+.nav a { color: white; text-decoration: none; }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>🚀 IVF-RaBitQ 🐰</h1>
-<p style="text-align: center; font-size: 1.5em; color: #555;">The Magic Library That Finds Similar Books SUPER FAST!</p>
-<h2>⚡ Search Time Showdown! How Fast Is Magic vs Old Ways?</h2>
-<table class="time-table">
-<tr><th>Method</th><th>Speed (higher QPS = faster)</th><th>Compared to old way</th><th>Accuracy</th></tr>
-<tr><td>Old full scan</td><td>Very slow (~1×)</td><td>1×</td><td>100%</td></tr>
-<tr><td>Basic IVF-Flat</td><td>~200–250 QPS</td><td>1×</td><td>~95%</td></tr>
-<tr><td>IVF + old PQ</td><td>~400–600 QPS</td><td>2–3×</td><td>80–94%</td></tr>
-<tr><td><strong>IVF-RaBitQ (magic!)</strong></td><td>~650–900+ QPS</td><td><strong>3–4× faster</strong> (up to 40× in best cases)</td><td>94–99%</td></tr>
+<h1>🚀 IVF-RaBitQ</h1>
+<p style="text-align: center; color: #888;">GPU-Native Approximate Nearest Neighbor Search with IVF + RaBitQ</p>
+
+<h2>📖 What is IVF-RaBitQ?</h2>
+<p>IVF-RaBitQ is a GPU-native ANNS (Approximate Nearest Neighbor Search) solution that combines:</p>
+<ul>
+<li><strong>IVF</strong> - Inverted File index for clustering</li>
+<li><strong>RaBitQ</strong> - Range Binary Quantization for efficient compression</li>
+</ul>
+
+<h2>⚡ Performance Results</h2>
+<table>
+<tr><th>Metric</th><th>IVF-RaBitQ</th><th>vs CAGRA (graph-based)</th><th>vs IVF-PQ</th></tr>
+<tr><td>Throughput (QPS)</td><td class="highlight">2.2× higher</td><td>1.3-5.6×</td><td>1.3-31.4×</td></tr>
+<tr><td>Index Build Time</td><td class="highlight">7.7× faster</td><td>3.4-13.1×</td><td>Similar</td></tr>
+<tr><td>Storage</td><td class="highlight">Much smaller</td><td>Less</td><td>Similar</td></tr>
+<tr><td>Recall</td><td>~95%</td><td>Comparable</td><td>Higher</td></tr>
 </table>
-<h2>🎮 Try the Magic Search!</h2>
-<input type="text" id="search-box" placeholder="e.g. fluffy teddy, fast car, gpu helpers...">
-<button id="search-btn">Search! 🔍✨</button>
-<div id="timer" class="timer"></div>
-<div id="search-result"></div>
+
+<h2>🔧 Core Algorithm</h2>
+
+<h3>1. IVF Index Construction</h3>
+<div class="code-block">
+<pre># Step 1: Cluster vectors using K-means
+centroids = kmeans(vectors, n_clusters=1024)
+
+# Step 2: Assign each vector to nearest centroid  
+inverted_lists = {}
+for vec in vectors:
+    cluster_id = find_nearest(vec, centroids)
+    inverted_lists[cluster_id].append(vec)</pre>
 </div>
-<script>
-const btn = document.getElementById('search-btn');
-const timerDiv = document.getElementById('timer');
-const resultDiv = document.getElementById('search-result');
-btn.addEventListener('click', simulateSearch);
-function simulateSearch() {
-if (btn.disabled) return;
-btn.disabled = true;
-btn.textContent = "Searching...";
-timerDiv.textContent = "Thinking with GPU friends... ⏳";
-resultDiv.innerHTML = "";
-const input = document.getElementById('search-box').value.toLowerCase().trim();
-if (!input) {
-finish("Oops! Please type something fun! 🧸", "slow", 1800);
-return;
-}
-// Simple toy matching logic
-const toys = [
-{name: "Fluffy Teddy Bear", tags: ["teddy", "bear", "fluffy", "brown"]},
-{name: "Red Race Car", tags: ["car", "race", "fast", "red"]},
-{name: "Brave Lion", tags: ["lion", "roar", "king"]},
-{name: "GPU SuperHelpers", tags: ["gpu", "fast", "helpers", "many"]},
-{name: "Magic Short Note", tags: ["short", "note", "rabbitq", "rabitq"]}
-];
-let score = 0;
-const words = input.split(/\s+/);
-let bestMatch = "a mystery friend";
-toys.forEach(toy => {
-let toyScore = 0;
-words.forEach(w => {
-if (toy.tags.some(t => t.includes(w) || w.includes(t))) toyScore++;
-});
-if (toyScore > score) {
-score = toyScore;
-bestMatch = toy.name;
-}
-});
-let message = "";
-let speedClass = "medium";
-if (score >= 2) {
-message = `Super fast match! Found <strong>${bestMatch}</strong>! 🎉⚡`;
-speedClass = "fast";
-} else if (score >= 1) {
-message = `Nice! Found <strong>${bestMatch}</strong> — good match! ✨`;
-speedClass = "medium";
-} else {
-message = "Wow — a rare surprise appeared! 🌟 (try better keywords next time)";
-speedClass = "slow";
-}
-// Fake timer
-const times = { fast: 450, medium: 950, slow: 1800 };
-const fakeMs = times[speedClass];
-setTimeout(() => {
-finish(message, speedClass, fakeMs);
-}, fakeMs);
-}
-function finish(msg, speedClass, ms) {
-const emoji = speedClass === "fast" ? "⚡" : speedClass === "medium" ? "✨" : "⏳";
-timerDiv.innerHTML = `Done in <strong>${ms} ms</strong>! 🚀`;
-resultDiv.innerHTML = `<span class="highlight">${emoji} ${msg}</span>`;
-btn.disabled = false;
-btn.textContent = "Search! 🔍✨";
-}
-</script>
+
+<h3>2. RaBitQ Quantization</h3>
+<div class="code-block">
+<pre># RaBitQ: Range Binary Quantization
+# Key insight: No codebook training needed!
+
+def quantize(vector):
+    # Normalize and rotate
+    rotated = rotate(vector)
+    
+    # For each dimension, compute 1-bit code
+    code = ""
+    for dim in rotated:
+        if dim > 0: code += "1"
+        else: code += "0"
+    
+    return code  # Super compact!
+
+def decode(code):
+    # Reconstruct from binary codes
+    return unrotate(code_to_vector(code))</pre>
+</div>
+
+<h3>3. GPU Search Pipeline</h3>
+<div class="code-block">
+<pre># GPU-optimized search
+def search(query, n_probe=32):
+    # Step 1: Find top-n clusters (GPU GEMM)
+    cluster_dists = gemm(query, centroids)
+    top_clusters = argtopk(cluster_dists, n_probe)
+    
+    # Step 2: RaBitQ filtering (1-bit codes)
+    for cluster in top_clusters:
+        codes = get_codes(cluster)
+        filtered = bit_filter(query, codes)
+        
+        # Step 3: Refinement (if needed)
+        candidates = refine(filtered, original_vectors)
+    
+    return topk(candidates, k)</pre>
+</div>
+
+<h2>🎯 Why It's Fast</h2>
+<table>
+<tr><th>Optimization</th><th>Technique</th><th>Benefit</th></tr>
+<tr><td>GPU-native quantization</td><td>Parallel encoding</td><td>1M vectors/sec</td></tr>
+<tr><td>Two-stage distance</td><td>Filter + Refine</td><td>Reduce compute</td></tr>
+<tr><td>Fused search kernel</td><td>Single GPU kernel</td><td>Less memory traffic</td></tr>
+<tr><td>Interleaved layout</td><td>Coalesced access</td><td>Cache efficiency</td></tr>
+</table>
+
+<h2>📚 References</h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2602.23999" style="color: #00d9ff;">Paper: IVF-RaBitQ</a></li>
+<li><a href="https://github.com/VectorDB-NTU/cuvs_rabitq" style="color: #00d9ff;">GitHub: cuVS implementation</a></li>
+</ul>
+
+<p style="text-align: center; color: #666; margin-top: 40px;">
+<em>Made simple from research by Jifan Shi et al. (NTU & NVIDIA)</em>
+</p>
+</div>
 </body>
 </html>
