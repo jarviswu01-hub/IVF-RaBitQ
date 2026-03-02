@@ -1,259 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IVF-RaBitQ - A Fun Guide for Kids! 🚀</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        h1 {
-            text-align: center;
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        h2 {
-            color: #764ba2;
-            border-bottom: 3px dashed #667eea;
-            padding-bottom: 10px;
-        }
-        .problem-box {
-            background: #ff6b6b;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-        .solution-box {
-            background: #4ecdc4;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-        .trick-box {
-            background: #feca57;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-        .toy-box {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-        .toy {
-            background: #ff9ff3;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 10px;
-            min-width: 100px;
-        }
-        .results-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        .results-table th, .results-table td {
-            border: 2px solid #667eea;
-            padding: 15px;
-            text-align: center;
-        }
-        .results-table th {
-            background: #667eea;
-            color: white;
-        }
-        .results-table td {
-            background: #f0f0f0;
-        }
-        .highlight {
-            background: #a8e6cf;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        .emoji {
-            font-size: 2em;
-        }
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-        .nav-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.2em;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
-        }
-        .nav-btn:hover {
-            transform: scale(1.1);
-        }
-        .search-demo {
-            background: #eee;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-        .search-box {
-            width: 70%;
-            padding: 15px;
-            font-size: 1.2em;
-            border: 3px solid #667eea;
-            border-radius: 50px;
-            outline: none;
-        }
-        .search-btn {
-            padding: 15px 30px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVF-RaBitQ - Super Fun Magic Library Adventure! 🚀🐰</title>
+<style>
+body { font-family: 'Comic Sans MS', 'Chalkboard SE', cursive; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; color: #333; }
+.container { max-width: 900px; margin: 0 auto; background: white; border-radius: 25px; padding: 35px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+h1 { text-align: center; color: #667eea; font-size: 3em; margin: 0 0 10px; }
+h2 { color: #764ba2; border-bottom: 4px dashed #667eea; padding-bottom: 12px; margin-top: 40px; }
+.problem-box { background: #ff6b6b; color: white; padding: 25px; border-radius: 20px; margin: 25px 0; }
+.trick-box { background: #feca57; padding: 20px; border-radius: 15px; margin: 20px 0; }
+.toy-box { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 25px 0; }
+.toy { background: #ff9ff3; padding: 25px; border-radius: 20px; text-align: center; margin: 12px; min-width: 110px; font-size: 1.4em; }
+.steps { background: #e0f7fa; padding: 20px; border-radius: 15px; margin: 25px 0; border: 3px dashed #26c6da; }
+.step { margin: 18px 0; font-size: 1.2em; padding-left: 50px; position: relative; }
+.step::before { content: attr(data-emoji); position: absolute; left: 0; font-size: 1.8em; }
+.results-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 1.1em; }
+.results-table th, .results-table td { border: 3px solid #667eea; padding: 18px; text-align: center; }
+.results-table th { background: #667eea; color: white; }
+.highlight { background: #a8e6cf; padding: 8px 14px; border-radius: 10px; font-weight: bold; }
+#search-result { min-height: 80px; margin-top: 20px; font-size: 1.3em; }
+input, button { padding: 12px 20px; font-size: 1.2em; border-radius: 12px; border: 2px solid #764ba2; }
+button { background: #764ba2; color: white; cursor: pointer; }
+button:hover { background: #5e3a8c; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 IVF-RaBitQ</h1>
-        <p style="text-align: center; font-size: 1.3em;">A Fun Guide for Kids!</p>
-        
-        <h2>🤔 What is This?</h2>
-        <p>Imagine you have a <strong>magic library</strong> with millions of books 📚</p>
-        <p>And someone asks: <em>"Find a book SIMILAR to this one!"</em></p>
-        <p><strong>How do you find it FAST?</strong> ⚡</p>
-        <p>That's exactly what <strong>IVF-RaBitQ</strong> does!</p>
-        
-        <div class="problem-box">
-            <h2>🧩 The Big Problem</h2>
-            <p>Computers today search through HUGE amounts of stuff:</p>
-            <ul>
-                <li>🔍 Google finding similar websites</li>
-                <li>📺 YouTube recommending videos</li>
-                <li>🤖 AI chatbots finding answers</li>
-            </ul>
-            <p><strong>Searching millions of things takes FOREVER! 😫</strong></p>
-        </div>
-        
-        <h2>💡 The Solution: Two Amazing Tricks!</h2>
-        
-        <div class="trick-box">
-            <h3>Trick #1: Sort into Boxes! 📦</h3>
-            <p>Think about your toys!</p>
-            <div class="toy-box">
-                <div class="toy">🧸<br>Bears</div>
-                <div class="toy">🚗<br>Cars</div>
-                <div class="toy">📚<br>Books</div>
-            </div>
-            <p>When you want a teddy bear → just look in the Teddy Bear box!</p>
-            <p>This is called <strong>IVF</strong> - it groups similar things together!</p>
-        </div>
-        
-        <div class="trick-box">
-            <h3>Trick #2: Short Descriptions! 📝</h3>
-            <p>Instead of describing EVERY detail:</p>
-            <p>❌ Long: <em>"A big fluffy brown teddy bear with soft cotton and black button eyes"</em></p>
-            <p>✅ Short: <strong>"Brown fluffy bear"</strong></p>
-            <p>Computers can search faster with short descriptions!</p>
-            <p>This is called <strong>RaBitQ</strong> - smart compression!</p>
-        </div>
-        
-        <h2>🎮 Why Use GPUs?</h2>
-        <p><strong>GPU = Many Tiny Helpers!</strong> 👯</p>
-        <div class="trick-box">
-            <p>🖥️ <strong>CPU</strong> = 1 person solving a puzzle 🙋</p>
-            <p>🎮 <strong>GPU</strong> = 1000 people solving puzzles together 🙋‍♀️🙋‍♂️</p>
-        </div>
-        <p>GPUs can search MUCH faster because many helpers work at once!</p>
-        
-        <h2>📊 Cool Results!</h2>
-        <table class="results-table">
-            <tr>
-                <th>What We Measure</th>
-                <th>IVF-RaBitQ</th>
-                <th>Old Way</th>
-            </tr>
-            <tr>
-                <td>Speed ⚡</td>
-                <td><strong>2.2x faster!</strong></td>
-                <td>Normal</td>
-            </tr>
-            <tr>
-                <td>Build Time 🏗️</td>
-                <td><strong>7.7x faster!</strong></td>
-                <td>Normal</td>
-            </tr>
-            <tr>
-                <td>Storage 💾</td>
-                <td><strong>Much smaller!</strong></td>
-                <td>Normal</td>
-            </tr>
-        </table>
-        
-        <h2>🎓 Remember!</h2>
-        <ol>
-            <li><strong>Group similar things</strong> → Like sorting toys into boxes</li>
-            <li><strong>Use short descriptions</strong> → Like writing a summary</li>
-            <li><strong>Get many friends to help</strong> → Like GPU helpers</li>
-        </ol>
-        
-        <h2>🌟 Why Is This Important?</h2>
-        <ul>
-            <li>🔍 Faster Google searches</li>
-            <li>🎬 Better YouTube recommendations</li>
-            <li>🤖 Smarter AI chatbots</li>
-            <li>💰 Costs less money!</li>
-            <li>🌱 Uses less energy!</li>
-        </ul>
-        
-        <div class="search-demo">
-            <h3>🔍 Try It! Search Simulation</h3>
-            <input type="text" class="search-box" placeholder="What are you looking for?">
-            <button class="search-btn" onclick="simulateSearch()">Search! 🔍</button>
-            <p id="search-result"></p>
-        </div>
-        
-        <p style="text-align: center; font-size: 1.5em; color: #667eea;">
-            <strong>Now YOU understand how computers search fast!</strong> 🎉
-        </p>
-        
-        <p style="text-align: center; color: #888;">
-            <em>Made simple from a real science paper by smart people at NTU and NVIDIA!</em>
-        </p>
-    </div>
-    
-    <script>
-        function simulateSearch() {
-            const queries = [
-                "Finding teddy bear in box (IVF)",
-                "Using short description (RaBitQ)",
-                "Many friends helping (GPU)"
-            ];
-            const result = queries[Math.floor(Math.random() * queries.length)];
-            document.getElementById('search-result').innerHTML = 
-                '<span class="highlight">⚡ Found it! ' + result + '</span>';
-        }
-    </script>
+<div class="container">
+<h1>🚀 IVF-RaBitQ 🐰</h1>
+<p style="text-align: center; font-size: 1.5em; color: #555;">The Magic Library That Finds Similar Books SUPER FAST!</p>
+<h2>🤔 What's the Magic About?</h2>
+<p>You have a GIANT library with <strong>millions of books</strong> 📚✨</p>
+<p>Someone says: <em>"I want a book just like this one!"</em></p>
+<p>Normal search = slow and boring 😴</p>
+<p><strong>IVF-RaBitQ</strong> = magic speed + tiny storage! ⚡💨</p>
+<div class="problem-box">
+<h2>🧩 The HUGE Problem</h2>
+<p>Computers look for similar things everywhere:</p>
+<ul>
+<li>🔍 Google similar pages</li><li>📺 YouTube "watch next" videos</li>
+<li>🖼️ TikTok / Instagram recommendations</li>
+<li>🤖 ChatGPT finding answers</li>
+</ul>
+<p><strong>Millions of things → takes too long! ⏳😫</strong></p>
+</div>
+<h2>💡 Two Super Tricks + GPU Friends!</h2>
+<div class="trick-box">
+<h3>Trick 1: Giant Toy Boxes! 📦 (This is IVF)</h3>
+<p>Put similar toys in the same box!</p>
+<div class="toy-box">
+<div class="toy">🧸<br>Teddies</div>
+<div class="toy">🚗<br>Cars</div>
+<div class="toy">🦁<br>Lions</div>
+<div class="toy">🍎<br>Fruits</div>
+</div>
+<p>Want teddy? → Only check the Teddy Box! Fast! ⚡</p>
+</div>
+<div class="trick-box">
+<h3>Trick 2: Super Short Secret Notes! 📝 (This is RaBitQ)</h3>
+<p>Long note: "A big fluffy brown teddy with a red bow and soft paws..."</p>
+<p>Short magic note: <strong>"brown fluffy +"</strong> (just 1 bit per idea!)</p>
+<p>RaBitQ turns long descriptions into tiny yes/no codes — still very accurate! 🪄</p>
+</div>
+<div class="trick-box">
+<h3>Extra Power: GPU = 1000 Tiny Helpers! 🎮👯</h3>
+<p>CPU = 1 friend solving puzzle slowly</p>
+<p>GPU = 1000 friends working together → lightning fast! ⚡</p>
+</div>
+<h2>🛤️ How It Really Works — Step by Step Adventure!</h2>
+<div class="steps">
+<div class="step" data-emoji="1️⃣">Put all books into groups (like toy boxes) using IVF — big similar clusters!</div>
+<div class="step" data-emoji="2️⃣">Spin every book with a magic random twist (rotation) — makes magic work better!</div>
+<div class="step" data-emoji="3️⃣">Write super short yes/no note for each book (RaBitQ binary code)</div>
+<div class="step" data-emoji="4️⃣">When friend asks for similar book:</div>
+<div class="step" data-emoji="→">Twist their book the same way</div>
+<div class="step" data-emoji="→">Only look in the most similar boxes (nprobe boxes)</div>
+<div class="step" data-emoji="→">Compare short notes super fast (bit tricks!)</div>
+<div class="step" data-emoji="5️⃣">Return the best matches — quick & accurate! 🎉</div>
+</div>
+<h2>📊 Wow Results from Real Tests!</h2>
+<table class="results-table">
+<tr><th>Super Power</th><th>IVF-RaBitQ Magic</th><th>Old Normal Way</th></tr>
+<tr><td>Search Speed ⚡</td><td><strong>2–3× faster</strong></td><td>Slow</td></tr>
+<tr><td>Building Time 🏗️</td><td><strong>7–10× faster</strong></td><td>Very slow</td></tr>
+<tr><td>Memory Used 💾</td><td><strong>Up to 32× smaller!</strong></td><td>Huge</td></tr>
+<tr><td>Accuracy (how good)</td><td>Almost same or better!</td><td>Good</td></tr>
+</table>
+<h2>🎮 Play Time! Magic Library Search Game</h2>
+<p>Try asking for toys or friends — see how the magic finds them!</p>
+<input type="text" id="search-box" placeholder="e.g. fluffy teddy, fast car, lion king, gpu helpers, brown bear...">
+<button onclick="simulateSearch()">Search the Magic Library! 🔍✨</button>
+<div id="search-result"></div>
+</div>
+<script>
+function simulateSearch() {
+const input = document.getElementById('search-box').value.toLowerCase().trim();
+const resultDiv = document.getElementById('search-result');
+if (!input) {
+resultDiv.innerHTML = '<span class="highlight">Oops! Write something fun to search! 🧸🚀</span>';
+return;
+}
+// Toy "database" — pretend we have these items with tags
+const toys = [
+{name: "Fluffy Teddy Bear", tags: ["teddy", "bear", "fluffy", "brown", "soft", "toy"], score: 0},
+{name: "Red Race Car", tags: ["car", "race", "red", "fast","zoom"], score: 0},
+{name: "Brave Lion King", tags: ["lion", "king", "brave", "roar", "wild"], score: 0},
+{name: "Magic GPU Helpers", tags: ["gpu", "helpers", "fast", "many", "friends", "power"], score: 0},
+{name: "Short Secret Note Book", tags: ["short", "note", "secret", "description", "rabbitq", "rabitq"], score: 0},
+{name: "Toy Box Group", tags: ["box", "group", "ivf", "cluster", "similar"], score: 0}
+];
+// Split input into words
+const words = input.split(/\s+/);
+// Score each toy based on keyword matches
+toys.forEach(toy => {
+toy.score = 0;
+words.forEach(word => {
+if (toy.tags.some(tag => tag.includes(word) || word.includes(tag))) {
+toy.score += 1;
+}
+});
+});
+// Sort by score descending
+toys.sort((a, b) => b.score - a.score);
+let message = '';
+let emoji = '⚡';
+if (toys[0].score >= 2) {
+message = `Yay! Found <strong>${toys[0].name}</strong> — very similar match! 🎉`;
+emoji = '🌟';
+} else if (toys[0].score >= 1) {
+message = `Cool! Found <strong>${toys[0].name}</strong> — pretty good match! 😊`;
+emoji = '✨';
+} else {
+// Fallback fun random
+const fun = [
+"Wow — a super rare fluffy friend appeared! 🧸",
+"Zoom! Fast car just raced in! 🚗💨",
+"Roar! Lion wants to play! 🦁",
+"Many GPU friends helping super fast! 🎮👯",
+"Short magic note found — secret unlocked! 📝🪄"
+];
+message = fun[Math.floor(Math.random() * fun.length)];
+}
+// Show thinking steps
+resultDiv.innerHTML = `
+<span class="highlight">${emoji} Searching magic boxes... 📦</span><br>
+<span style="color:#555; font-size:0.95em;">Step 1: Looking in similar groups...</span><br>
+<span style="color:#555; font-size:0.95em;">Step 2: Checking short magic notes...</span><br>
+<span style="color:#555; font-size:0.95em;">Step 3: Comparing fast with GPU helpers...</span><br><br>
+${message}
+`;
+}
+</script>
 </body>
 </html>
