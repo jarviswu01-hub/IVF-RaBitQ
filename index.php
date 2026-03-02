@@ -16,14 +16,16 @@ h2 { color: #764ba2; border-bottom: 4px dashed #667eea; padding-bottom: 12px; ma
 .steps { background: #e0f7fa; padding: 20px; border-radius: 15px; margin: 25px 0; border: 3px dashed #26c6da; }
 .step { margin: 18px 0; font-size: 1.2em; padding-left: 50px; position: relative; }
 .step::before { content: attr(data-emoji); position: absolute; left: 0; font-size: 1.8em; }
-.results-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 1.1em; }
-.results-table th, .results-table td { border: 3px solid #667eea; padding: 18px; text-align: center; }
-.results-table th { background: #667eea; color: white; }
+.results-table, .time-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 1.1em; }
+.results-table th, .results-table td, .time-table th, .time-table td { border: 3px solid #667eea; padding: 18px; text-align: center; }
+.results-table th, .time-table th { background: #667eea; color: white; }
 .highlight { background: #a8e6cf; padding: 8px 14px; border-radius: 10px; font-weight: bold; }
-#search-result { min-height: 80px; margin-top: 20px; font-size: 1.3em; }
-input, button { padding: 12px 20px; font-size: 1.2em; border-radius: 12px; border: 2px solid #764ba2; }
+#search-result { min-height: 120px; margin-top: 20px; font-size: 1.3em; }
+input, button { padding: 12px 20px; font-size: 1.2em; border-radius: 12px; border: 2px solid #764ba2; margin: 10px 5px; }
 button { background: #764ba2; color: white; cursor: pointer; }
 button:hover { background: #5e3a8c; }
+button:disabled { background: #aaa; cursor: not-allowed; }
+.timer { font-size: 1.4em; color: #ff6b6b; font-weight: bold; margin: 10px 0; }
 </style>
 </head>
 <body>
@@ -39,7 +41,8 @@ button:hover { background: #5e3a8c; }
 <h2>🧩 The HUGE Problem</h2>
 <p>Computers look for similar things everywhere:</p>
 <ul>
-<li>🔍 Google similar pages</li><li>📺 YouTube "watch next" videos</li>
+<li>🔍 Google similar pages</li>
+<li>📺 YouTube "watch next" videos</li>
 <li>🖼️ TikTok / Instagram recommendations</li>
 <li>🤖 ChatGPT finding answers</li>
 </ul>
@@ -79,40 +82,50 @@ button:hover { background: #5e3a8c; }
 <div class="step" data-emoji="→">Compare short notes super fast (bit tricks!)</div>
 <div class="step" data-emoji="5️⃣">Return the best matches — quick & accurate! 🎉</div>
 </div>
-<h2>📊 Wow Results from Real Tests!</h2>
-<table class="results-table">
-<tr><th>Super Power</th><th>IVF-RaBitQ Magic</th><th>Old Normal Way</th></tr>
-<tr><td>Search Speed ⚡</td><td><strong>2–3× faster</strong></td><td>Slow</td></tr>
-<tr><td>Building Time 🏗️</td><td><strong>7–10× faster</strong></td><td>Very slow</td></tr>
-<tr><td>Memory Used 💾</td><td><strong>Up to 32× smaller!</strong></td><td>Huge</td></tr>
-<tr><td>Accuracy (how good)</td><td>Almost same or better!</td><td>Good</td></tr>
+<h2>⚡ Search Time Showdown! How Fast Is Magic vs Old Ways?</h2>
+<p>Real tests from big libraries (like Milvus & research) show how much faster IVF-RaBitQ is:</p>
+<table class="time-table">
+<tr><th>Method</th><th>Speed (QPS - higher = faster!)</th><th>Compared to Old IVF-Flat</th><th>Recall (how good?)</th><th>Memory</th></tr>
+<tr><td>Old Full Scan (brute force)</td><td>Very slow (~1×)</td><td>1×</td><td>100% perfect</td><td>Huge</td></tr>
+<tr><td>Basic IVF-Flat (no compression)</td><td>~236 QPS</td><td>1× (baseline)</td><td>~95%</td><td>Full size</td></tr>
+<tr><td>Old IVF + PQ (common compression)</td><td>~420–611 QPS</td><td>~2–3×</td><td>~79–94%</td><td>~25% size</td></tr>
+<tr><td><strong>IVF-RaBitQ (our magic!)</strong></td><td>~648–898 QPS</td><td><strong>3–4× faster</strong> (up to 40× in tuned tests!)</td><td>~94–99%</td><td>~3–4% size (32× smaller!)</td></tr>
+<tr><td>HNSW (fancy graph way)</td><td>Fast in RAM, varies</td><td>10–30× sometimes</td><td>Very high~95–99%</td><td>Medium–high</td></tr>
 </table>
+<p><small>Note: QPS = Queries Per Second (how many searches in 1 second). Higher = faster! Numbers from Milvus 2.6+, LanceDB, RaBitQ paper & benchmarks (2025–2026). Exact speed depends on computer, data size, GPU/CPU.</small></p>
 <h2>🎮 Play Time! Magic Library Search Game</h2>
-<p>Try asking for toys or friends — see how the magic finds them!</p>
+<p>Try asking for toys — watch the magic timer show how fast it finds things!</p>
 <input type="text" id="search-box" placeholder="e.g. fluffy teddy, fast car, lion king, gpu helpers, brown bear...">
-<button onclick="simulateSearch()">Search the Magic Library! 🔍✨</button>
+<button id="search-btn" onclick="simulateSearch()">Search the Magic Library! 🔍✨</button>
+<div id="timer" class="timer"></div>
 <div id="search-result"></div>
 </div>
 <script>
+let isSearching = false;
 function simulateSearch() {
-const input = document.getElementById('search-box').value.toLowerCase().trim();
+if (isSearching) return;
+isSearching = true;
+const btn = document.getElementById('search-btn');
+btn.disabled = true;
+const timerDiv = document.getElementById('timer');
 const resultDiv = document.getElementById('search-result');
+timerDiv.innerHTML = 'Searching magic boxes... ⏳';
+resultDiv.innerHTML = '';
+const input = document.getElementById('search-box').value.toLowerCase().trim();
 if (!input) {
-resultDiv.innerHTML = '<span class="highlight">Oops! Write something fun to search! 🧸🚀</span>';
+finishSearch('Oops! Write something fun to search! 🧸🚀', 'slow');
 return;
 }
-// Toy "database" — pretend we have these items with tags
+// Toy database
 const toys = [
 {name: "Fluffy Teddy Bear", tags: ["teddy", "bear", "fluffy", "brown", "soft", "toy"], score: 0},
-{name: "Red Race Car", tags: ["car", "race", "red", "fast","zoom"], score: 0},
+{name: "Red Race Car", tags: ["car", "race", "red", "fast", "zoom"], score: 0},
 {name: "Brave Lion King", tags: ["lion", "king", "brave", "roar", "wild"], score: 0},
 {name: "Magic GPU Helpers", tags: ["gpu", "helpers", "fast", "many", "friends", "power"], score: 0},
 {name: "Short Secret Note Book", tags: ["short", "note", "secret", "description", "rabbitq", "rabitq"], score: 0},
 {name: "Toy Box Group", tags: ["box", "group", "ivf", "cluster", "similar"], score: 0}
 ];
-// Split input into words
 const words = input.split(/\s+/);
-// Score each toy based on keyword matches
 toys.forEach(toy => {
 toy.score = 0;
 words.forEach(word => {
@@ -121,35 +134,52 @@ toy.score += 1;
 }
 });
 });
-// Sort by score descending
 toys.sort((a, b) => b.score - a.score);
 let message = '';
-let emoji = '⚡';
-if (toys[0].score >= 2) {
-message = `Yay! Found <strong>${toys[0].name}</strong> — very similar match! 🎉`;
-emoji = '🌟';
+let speed = 'medium'; // fast / medium / slow
+if (toys[0].score >= 3) {
+message = `Lightning fast! Found <strong>${toys[0].name}</strong> — super match! 🎉⚡`;
+speed = 'fast';
 } else if (toys[0].score >= 1) {
-message = `Cool! Found <strong>${toys[0].name}</strong> — pretty good match! 😊`;
-emoji = '✨';
+message = `Quick find! <strong>${toys[0].name}</strong> — great match! 😊✨`;
+speed = 'medium';
 } else {
-// Fallback fun random
 const fun = [
-"Wow — a super rare fluffy friend appeared! 🧸",
+"Wow — a super rare fluffy friend appeared after a tiny wait! 🧸",
 "Zoom! Fast car just raced in! 🚗💨",
 "Roar! Lion wants to play! 🦁",
 "Many GPU friends helping super fast! 🎮👯",
 "Short magic note found — secret unlocked! 📝🪄"
 ];
 message = fun[Math.floor(Math.random() * fun.length)];
+speed = 'slow';
 }
-// Show thinking steps
+// Fake timer animation (based on "difficulty")
+let baseTime = speed === 'fast' ? 300 : speed === 'medium' ? 800 : 1800;
+let elapsed = 0;
+const interval = setInterval(() => {
+elapsed += 100;
+timerDiv.innerHTML = `Thinking with GPU friends... ${elapsed} ms ⏱️`;
+if (elapsed >= baseTime) {
+clearInterval(interval);
+finishSearch(message, speed);
+}
+}, 100);
+}
+function finishSearch(msg, spd) {
+clearInterval(interval);
+const finalTime = spd === 'fast' ? '320 ms' : spd === 'medium' ? '780 ms' : '1,650 ms';
+timerDiv.innerHTML = `Search finished in <strong>${finalTime}</strong>! 🚀`;
 resultDiv.innerHTML = `
-<span class="highlight">${emoji} Searching magic boxes... 📦</span><br>
-<span style="color:#555; font-size:0.95em;">Step 1: Looking in similar groups...</span><br>
-<span style="color:#555; font-size:0.95em;">Step 2: Checking short magic notes...</span><br>
-<span style="color:#555; font-size:0.95em;">Step 3: Comparing fast with GPU helpers...</span><br><br>
-${message}
+<span class="highlight">${spd === 'fast' ? '⚡' : spd === 'medium' ? '✨' : '⏳'} ${msg}</span><br><br>
+<span style="color:#555; font-size:0.95em;">
+Step 1: Looking in similar groups... 📦<br>
+Step 2: Checking short magic notes... 📝<br>
+Step 3: Comparing fast with GPU helpers... 👯<br>
+</span>
 `;
+btn.disabled = false;
+isSearching = false;
 }
 </script>
 </body>
